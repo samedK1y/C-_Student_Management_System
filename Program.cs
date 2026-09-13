@@ -13,7 +13,7 @@ namespace StudentManagementSystem
 
         static void Panel()
         {
-            Console.WriteLine("----STUDENT MANAGEMENT----" +
+            Console.WriteLine("----📋STUDENT MANAGEMENT📋----" +
                 "\n====1)Add Student" +
                 "\n====2)Delete Students" +
                 "\n====3)View Students" +
@@ -28,7 +28,7 @@ namespace StudentManagementSystem
         static void AddStudent()
         {
             bool basariliMi;
-            string Vname, Vsurname, Vmajor;
+            string Vname, Vsurname, Vdepartment;
             GenderEnum genderParsed;
             ClassEnum classEnum;
             int ageParsed,
@@ -127,12 +127,12 @@ namespace StudentManagementSystem
             }
             while (true)
             {
-                Console.WriteLine("\n● What is the major they are studying?");
-                 Vmajor = Console.ReadLine();
+                Console.WriteLine("\n● What is the department they are studying in?");
+                 Vdepartment = Console.ReadLine();
                 break;
             }
 
-            StudentInformation student = new StudentInformation(idParsed, Vname, Vsurname, ageParsed, genderParsed, classEnum, Vmajor);
+            StudentInformation student = new StudentInformation(idParsed, Vname, Vsurname, ageParsed, genderParsed, classEnum, Vdepartment);
              basariliMi = studentManagement.AddStudent(student);
             if(!basariliMi)
             {
@@ -186,6 +186,28 @@ namespace StudentManagementSystem
                 Console.WriteLine($"-Name / Id: {studentManagement.Persons[i].Name} / {studentManagement.Persons[i].Id}\n");
             }
         }
+        static void ViewStudents()
+        {
+            if (studentManagement.Persons.Count == 0)
+            {
+                Console.WriteLine("⚠️ There are no students to display.\n");
+                return;
+            }
+
+            
+            for (int i =0; i < studentManagement.Persons.Count; i++)
+            {
+                Console.WriteLine(
+                    $"\n🧑‍🎓-----------\n" +
+                    $"-Name:        {studentManagement.Persons[i].Name}\n" +
+                    $"-Surname:     {studentManagement.Persons[i].Surname}\n" +
+                    $"-Age:         {studentManagement.Persons[i].Age}\n" +
+                    $"-Gender:      {studentManagement.Persons[i].Gender}\n" +
+                    $"-Class:       {studentManagement.Persons[i]._Class}\n" +
+                    $"-Department:  {studentManagement.Persons[i].Department}\n" +
+                    $"-------------\n");
+            }
+        }
         static void Main(string[] args)
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -209,7 +231,10 @@ namespace StudentManagementSystem
                         break;
                     case 2:
                         DeleteStudent(); 
-                        break; 
+                        break;
+                    case 3:
+                        ViewStudents();
+                        break;
 
                     default:
                         Console.WriteLine("⚠️Invalid selection. Please try again.\n");

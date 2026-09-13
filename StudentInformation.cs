@@ -91,6 +91,7 @@ namespace C__Student_Management_System
             Console.WriteLine($"Age     : {Age}");
             Console.WriteLine($"Gender  : {Gender}");
             Console.WriteLine($"Class   : {_Class}");
+            Console.WriteLine($"Department : {Department}");
             Console.WriteLine($"-----------------------------\n");
 
         }
