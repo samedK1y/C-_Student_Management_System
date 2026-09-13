@@ -185,7 +185,7 @@ namespace StudentManagementSystem
                         break;
 
                     default:
-                        Console.WriteLine("⚠️Invalid selection. Please try againasdasd.\n");
+                        Console.WriteLine("⚠️Invalid selection. Please try again.\n");
                         break;
                 }
             }while (secimInt != 8);
