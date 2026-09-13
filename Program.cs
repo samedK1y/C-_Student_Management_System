@@ -148,18 +148,42 @@ namespace StudentManagementSystem
         static void DeleteStudent()
         {
             int idToDelete;
+            ViewStudentId();
             while (true)
             {
+                if (studentManagement.Persons.Count == 0)
+                {
+                    Console.WriteLine("⚠️ There are no students to delete.\n");
+                    break;
+                }
                 Console.WriteLine("Enter the ID of the student you want to delete:");
                 var inputId = Console.ReadLine();
                 bool basariliMi = int.TryParse(inputId, out  idToDelete);
                 if (!basariliMi || idToDelete < 0 || idToDelete > 9999)
                 {
-                    Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)");
+                    Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
 
                     continue;
                 }
+                else
+                {
+                   basariliMi = studentManagement.RemoveStudent(idToDelete);
+                    if (!basariliMi)
+                    {
+                        Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
+                        break;
+                    }
+                }
+                break;
 
+            }
+        }
+        static void ViewStudentId()
+        {
+            Console.WriteLine("\n---Student List---\n");
+            for (int i = 0;i < studentManagement.Persons.Count; i++)
+            {
+                Console.WriteLine($"-Name / Id: {studentManagement.Persons[i].Name} / {studentManagement.Persons[i].Id}\n");
             }
         }
         static void Main(string[] args)
@@ -183,6 +207,9 @@ namespace StudentManagementSystem
                     case 1:
                         AddStudent();
                         break;
+                    case 2:
+                        DeleteStudent(); 
+                        break; 
 
                     default:
                         Console.WriteLine("⚠️Invalid selection. Please try again.\n");

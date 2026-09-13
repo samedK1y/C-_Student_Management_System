@@ -29,17 +29,17 @@ namespace C__Student_Management_System
                 return false;
             }
         }
-        public bool RemoveStudent(StudentInformation student)
+        public bool RemoveStudent(int id)
         {
             bool bulunduMu = false;
             if (_students.Count > 0)
             {
                 for (int i = 0; i < _students.Count; i++)
                 {
-                    if (_students[i].Id == student.Id)
+                    if (_students[i].Id == id)
                     {
                         _students.RemoveAt(i);
-                        Console.WriteLine("Student removed successfully.");
+                        Console.WriteLine("Student removed successfully.\n");
                         bulunduMu = true;
                         break;
 
@@ -52,6 +52,7 @@ namespace C__Student_Management_System
             {
                 
                 Console.WriteLine("Student not found.");
+                bulunduMu = false;
 
             }
             return bulunduMu;
