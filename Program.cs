@@ -3,7 +3,34 @@ using System;
 
 
 
+/** 
+ 
+ They will be fixed:
 
+1) UpdateStudent methodunu student managment kısmında yap ve encapsulationa uyması adına.
+2)Add student çok dolu olduğundan ayrı methodtlar açılacak GetValidText , GetValidInt, GetValidEnum gibi.Daha sonra addstudentte birleştirlecek
+  GetValidText(string prompt)
+        {
+             while(true)
+             {
+                 Console.WriteLine(prompt);
+                 var input = Console.ReadLine();
+                 if(string.IsNullOrWhiteSpace(input))
+                 {
+                     Console.WriteLine("⚠️ Please do not enter an empty expression or one that is not a string");
+                     continue;
+                 }
+                 return input;
+             }       
+        }
+3)ID çakışımına çözüm bul.
+4)isnotstringi kullanma!!
+
+ 
+ 
+ 
+ 
+ **/
 namespace StudentManagementSystem
 {
 
@@ -27,7 +54,7 @@ namespace StudentManagementSystem
         static StudentManagement studentManagement = new StudentManagement();
         static void AddStudent()
         {
-            bool basariliMi;
+            bool isSuccesful;
             string Vname, Vsurname, Vdepartment;
             GenderEnum genderParsed;
             ClassEnum classEnum;
@@ -38,8 +65,8 @@ namespace StudentManagementSystem
             {
                 Console.WriteLine("\n● Gender(Male/Female) ?");
                 var Vgender = Console.ReadLine();
-                basariliMi = Enum.TryParse<GenderEnum>(Vgender,true,out  genderParsed);
-                if(!basariliMi)
+                isSuccesful = Enum.TryParse<GenderEnum>(Vgender,true,out  genderParsed);
+                if(!isSuccesful)
                 {
                     Console.WriteLine("⚠️Please enter a valid gender (Male/Female ).");
                     continue;
@@ -73,8 +100,8 @@ namespace StudentManagementSystem
             {
                 Console.WriteLine("\n● Age of the student to be added ?");
                 var Vage = Console.ReadLine();
-                basariliMi = int.TryParse(Vage, out ageParsed);
-                if(!basariliMi)
+                isSuccesful = int.TryParse(Vage, out ageParsed);
+                if(!isSuccesful)
                 {
                     Console.WriteLine("⚠️ Please enter a valid age.\n");
                     continue;
@@ -90,8 +117,8 @@ namespace StudentManagementSystem
             {
                 Console.WriteLine("\n● Student ID ?");
                 var VId = Console.ReadLine();
-                basariliMi = int.TryParse(VId, out idParsed);
-                if (!basariliMi)
+                isSuccesful = int.TryParse(VId, out idParsed);
+                if (!isSuccesful)
                 {
                     Console.WriteLine("⚠️ Please enter a valid student ID.\n");
                     continue;
@@ -100,22 +127,22 @@ namespace StudentManagementSystem
                 break;
 
             }
-            bool bulunduMu;
+            bool isFound;
             while (true)
             {
                 Console.WriteLine("\n● Which Class?(1,2,3,4)");
                 var Vclass = Console.ReadLine();
-                basariliMi = int.TryParse(Vclass, out gradeParsed);
+                isSuccesful = int.TryParse(Vclass, out gradeParsed);
                 int newGradeParsed = gradeParsed - 1;
-                if (!basariliMi)
+                if (!isSuccesful)
                 {
                     Console.WriteLine("Please enter a valid class.");
                     continue;
                 }
-                basariliMi = Enum.TryParse<ClassEnum>(newGradeParsed.ToString(), out  classEnum);
-                bulunduMu = Enum.IsDefined(typeof(ClassEnum), classEnum);
+                isSuccesful = Enum.TryParse<ClassEnum>(newGradeParsed.ToString(), out  classEnum);
+                isFound = Enum.IsDefined(typeof(ClassEnum), classEnum);
 
-                if (!basariliMi || !bulunduMu)
+                if (!isSuccesful || !isFound)
                 {
                     Console.WriteLine("⚠️ Please enter a valid class (1,2,3,4).\n");
                     continue;
@@ -138,8 +165,8 @@ namespace StudentManagementSystem
             }
 
             StudentInformation student = new StudentInformation(idParsed, Vname, Vsurname, ageParsed, genderParsed, classEnum, Vdepartment);
-             basariliMi = studentManagement.AddStudent(student);
-            if(!basariliMi)
+             isSuccesful = studentManagement.AddStudent(student);
+            if(!isSuccesful)
             {
                 Console.WriteLine("⚠️ Failed to add student.\n");
             }
@@ -163,8 +190,8 @@ namespace StudentManagementSystem
                 }
                 Console.WriteLine("Enter the ID of the student you want to delete:");
                 var inputId = Console.ReadLine();
-                bool basariliMi = int.TryParse(inputId, out  idToDelete);
-                if (!basariliMi || idToDelete < 0 || idToDelete > 9999)
+                bool isSuccesful = int.TryParse(inputId, out  idToDelete);
+                if (!isSuccesful || idToDelete < 0 || idToDelete > 9999)
                 {
                     Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
 
@@ -172,8 +199,8 @@ namespace StudentManagementSystem
                 }
                 else
                 {
-                   basariliMi = studentManagement.RemoveStudent(idToDelete);
-                    if (!basariliMi)
+                   isSuccesful = studentManagement.RemoveStudent(idToDelete);
+                    if (!isSuccesful)
                     {
                         Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
                         break;
@@ -224,14 +251,14 @@ namespace StudentManagementSystem
                 return;
             }
             int idToSearch;
-            bool bulunduMu = false;
+            bool isFound = false;
             while (true)
             {
                
                 Console.WriteLine("The ID number of the student you wish to search for?");
                 var inputId = Console.ReadLine();
-                bool basariliMi = int.TryParse(inputId, out idToSearch);
-                if(!basariliMi)
+                bool isSuccesful = int.TryParse(inputId, out idToSearch);
+                if(!isSuccesful)
                 {
                     Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
                     break;
@@ -242,13 +269,13 @@ namespace StudentManagementSystem
                     {
                         Console.WriteLine("!Student found!");
                         ViewStudents();
-                        bulunduMu = true;
+                        isFound = true;
                         break;
 
                     }
 
                 }
-                if (!bulunduMu)
+                if (!isFound)
                 {
                     Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
                     continue;
@@ -274,8 +301,8 @@ namespace StudentManagementSystem
             {
                 Console.WriteLine("Enter the ID of the student you want to update:");
                  updateIdInput = Console.ReadLine();
-                bool basariliMi = int.TryParse(updateIdInput, out  updateId);
-                if (!basariliMi)
+                bool isSuccesful = int.TryParse(updateIdInput, out  updateId);
+                if (!isSuccesful)
                 {
                     Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
                     continue;
@@ -293,8 +320,8 @@ namespace StudentManagementSystem
                     {
                         Console.WriteLine("Enter new Gender(Male/Female):");
                         var newGender = Console.ReadLine();
-                        bool basarilimi = Enum.TryParse<GenderEnum>(newGender, true, out GenderEnum genderParsed);
-                        if (!basarilimi)
+                        bool isSuccesful = Enum.TryParse<GenderEnum>(newGender, true, out GenderEnum genderParsed);
+                        if (!isSuccesful)
                         {
                             Console.WriteLine("⚠️ Please enter a valid gender (Male/Female)");
                             continue;
@@ -330,8 +357,8 @@ namespace StudentManagementSystem
                     {
                         Console.WriteLine("\n●Enter new Age:");
                         var newAgeInput = Console.ReadLine();
-                        bool basarilimi = int.TryParse(newAgeInput, out int newAge);
-                        if (!basarilimi || newAge < 16 || newAge > 65)
+                        bool isSuccesful = int.TryParse(newAgeInput, out int newAge);
+                        if (!isSuccesful || newAge < 16 || newAge > 65)
                         {
                             Console.WriteLine("⚠️ Please enter a valid age between 16 and 65.");
                             continue;
@@ -343,16 +370,16 @@ namespace StudentManagementSystem
                     {
                         Console.WriteLine("\n●Enter new Class(1,2,3,4):");
                         var newClassInput = Console.ReadLine();
-                        bool basariliMi = int.TryParse(newClassInput, out int newClassParsed);
-                        if (!basariliMi)
+                        bool isSuccesful = int.TryParse(newClassInput, out int newClassParsed);
+                        if (!isSuccesful)
                         {
                             Console.WriteLine("⚠️ Please enter a valid class.");
                             continue;
 
                         }
-                        basariliMi = Enum.TryParse<ClassEnum>((newClassParsed - 1).ToString(), out ClassEnum classEnum);
+                        isSuccesful = Enum.TryParse<ClassEnum>((newClassParsed - 1).ToString(), out ClassEnum classEnum);
                         bulunuMu = Enum.IsDefined(typeof(ClassEnum), classEnum);
-                        if (!basariliMi || !bulunuMu)
+                        if (!isSuccesful || !bulunuMu)
                         {
                             Console.WriteLine("⚠️ Please enter a valid class (1,2,3,4).");
                             continue;
@@ -379,14 +406,14 @@ namespace StudentManagementSystem
         {
             System.Console.OutputEncoding = System.Text.Encoding.UTF8;
             int secimInt;
-            bool basariliMi;
+            bool isSuccesful;
 
             do
             {
                 Panel();
                  var secim = Console.ReadLine();
-                basariliMi = int.TryParse(secim, out  secimInt);
-                if (!basariliMi)
+                isSuccesful = int.TryParse(secim, out  secimInt);
+                if (!isSuccesful)
                 {
                     Console.WriteLine("\n⚠️Invalid selection. Please enter a value within the specified range.\n");
                     continue;
