@@ -129,6 +129,11 @@ namespace StudentManagementSystem
             {
                 Console.WriteLine("\n● What is the department they are studying in?");
                  Vdepartment = Console.ReadLine();
+                if (Vdepartment is not string && !string.IsNullOrWhiteSpace(Vdepartment))
+                {
+                    Console.WriteLine("⚠️ Please do not enter an empty expression or one that is not a string.\n");
+                    continue;
+                }
                 break;
             }
 
@@ -219,7 +224,7 @@ namespace StudentManagementSystem
                 return;
             }
             int idToSearch;
-
+            bool bulunduMu = false;
             while (true)
             {
                
@@ -231,21 +236,22 @@ namespace StudentManagementSystem
                     Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
                     break;
                 }
-                for (int i = 0; i <= studentManagement.Persons.Count; i++)
+                for (int i = 0; i < studentManagement.Persons.Count; i++)
                 {
                     if (studentManagement.Persons[i].Id == idToSearch)
                     {
                         Console.WriteLine("!Student found!");
                         ViewStudents();
+                        bulunduMu = true;
                         break;
 
                     }
-                    else
-                    {
-                        Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
-                        break;
-                    }
 
+                }
+                if (!bulunduMu)
+                {
+                    Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
+                    continue;
                 }
                 break;
             }
