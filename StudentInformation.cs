@@ -93,6 +93,7 @@ namespace C__Student_Management_System
             Console.WriteLine($"Class   : {_Class}");
             Console.WriteLine($"Department : {Department}");
             Console.WriteLine($"-----------------------------\n");
+            Console.WriteLine($"-----------------------------\n");
 
         }
     }

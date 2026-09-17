@@ -188,6 +188,7 @@ namespace StudentManagementSystem
         }
         static void ViewStudents()
         {
+            
             if (studentManagement.Persons.Count == 0)
             {
                 Console.WriteLine("⚠️ There are no students to display.\n");
@@ -207,6 +208,52 @@ namespace StudentManagementSystem
                     $"-Department:  {studentManagement.Persons[i].Department}\n" +
                     $"-------------\n");
             }
+        }
+
+        static void SearchStudent()
+        {
+            ViewStudentId();
+            if (studentManagement.Persons.Count == 0)
+            {
+                Console.WriteLine("⚠️ There are no students to display.\n");
+                return;
+            }
+            int idToSearch;
+
+            while (true)
+            {
+               
+                Console.WriteLine("The ID number of the student you wish to search for?");
+                var inputId = Console.ReadLine();
+                bool basariliMi = int.TryParse(inputId, out idToSearch);
+                if(!basariliMi)
+                {
+                    Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
+                    break;
+                }
+                else
+                {
+                    for(int i = 0; i<=studentManagement.Persons.Count;i++)
+                    {
+                        if (studentManagement.Persons[i].Id == idToSearch)
+                        {
+                            Console.WriteLine("!Student found!");
+                            ViewStudents();
+                            break;
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
+                            break;
+                        }
+
+                    }
+                }
+                break;
+            }
+             
+
         }
         static void Main(string[] args)
         {
@@ -234,6 +281,9 @@ namespace StudentManagementSystem
                         break;
                     case 3:
                         ViewStudents();
+                        break;
+                    case 4:
+                        SearchStudent();
                         break;
 
                     default:
