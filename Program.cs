@@ -231,29 +231,143 @@ namespace StudentManagementSystem
                     Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
                     break;
                 }
-                else
+                for (int i = 0; i <= studentManagement.Persons.Count; i++)
                 {
-                    for(int i = 0; i<=studentManagement.Persons.Count;i++)
+                    if (studentManagement.Persons[i].Id == idToSearch)
                     {
-                        if (studentManagement.Persons[i].Id == idToSearch)
-                        {
-                            Console.WriteLine("!Student found!");
-                            ViewStudents();
-                            break;
-                            
-                        }
-                        else
-                        {
-                            Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
-                            break;
-                        }
+                        Console.WriteLine("!Student found!");
+                        ViewStudents();
+                        break;
 
                     }
+                    else
+                    {
+                        Console.WriteLine("⚠️ Student not found. Please enter a valid student ID.\n");
+                        break;
+                    }
+
                 }
                 break;
             }
              
 
+        }
+
+        static void UpdateStudent()
+        {
+            bool bulunuMu;
+            ViewStudentId();
+            if (studentManagement.Persons.Count == 0)
+            {
+                Console.WriteLine("⚠️ There are no students to display.\n");
+                return;
+            }
+            int updateId;
+            string updateIdInput;
+            while (true)
+            {
+                Console.WriteLine("Enter the ID of the student you want to update:");
+                 updateIdInput = Console.ReadLine();
+                bool basariliMi = int.TryParse(updateIdInput, out  updateId);
+                if (!basariliMi)
+                {
+                    Console.WriteLine("⚠️ Please enter a valid student ID.(0-9999)\n");
+                    continue;
+                }
+                break;
+                
+            }
+            
+            for (int i = 0; i < studentManagement.Persons.Count; i++)
+            {
+                if (studentManagement.Persons[i].Id == updateId)
+                {
+                    Console.WriteLine("✅Student found. Please enter the updated information:");
+                    while (true)
+                    {
+                        Console.WriteLine("Enter new Gender(Male/Female):");
+                        var newGender = Console.ReadLine();
+                        bool basarilimi = Enum.TryParse<GenderEnum>(newGender, true, out GenderEnum genderParsed);
+                        if (!basarilimi)
+                        {
+                            Console.WriteLine("⚠️ Please enter a valid gender (Male/Female)");
+                            continue;
+                        }
+                        studentManagement.Persons[i].Gender = genderParsed;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("\n●Enter new Name:");
+                        var newName = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(newName))
+                        {
+                            Console.WriteLine("⚠️ Please do not enter an empty expression or one that is not a string");
+                            continue;
+                        }
+                        studentManagement.Persons[i].Name = newName;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("\n●Enter new Surname:");
+                        var newSurname = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(newSurname))
+                        {
+                            Console.WriteLine("⚠️ Please do not enter an empty expression or one that is not a string");
+                            continue;
+                        }
+                        studentManagement.Persons[i].Surname = newSurname;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("\n●Enter new Age:");
+                        var newAgeInput = Console.ReadLine();
+                        bool basarilimi = int.TryParse(newAgeInput, out int newAge);
+                        if (!basarilimi || newAge < 16 || newAge > 65)
+                        {
+                            Console.WriteLine("⚠️ Please enter a valid age between 16 and 65.");
+                            continue;
+                        }
+                        studentManagement.Persons[i].Age = newAge;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("\n●Enter new Class(1,2,3,4):");
+                        var newClassInput = Console.ReadLine();
+                        bool basariliMi = int.TryParse(newClassInput, out int newClassParsed);
+                        if (!basariliMi)
+                        {
+                            Console.WriteLine("⚠️ Please enter a valid class.");
+                            continue;
+
+                        }
+                        basariliMi = Enum.TryParse<ClassEnum>((newClassParsed - 1).ToString(), out ClassEnum classEnum);
+                        bulunuMu = Enum.IsDefined(typeof(ClassEnum), classEnum);
+                        if (!basariliMi || !bulunuMu)
+                        {
+                            Console.WriteLine("⚠️ Please enter a valid class (1,2,3,4).");
+                            continue;
+                        }
+                        studentManagement.Persons[i]._Class = classEnum;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("\n●Enter new Department:");
+                        var newDepartment = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(newDepartment))
+                        {
+                            Console.WriteLine("⚠️ Please do not enter an empty expression or one that is not a string");
+                            continue;
+                        }
+                        studentManagement.Persons[i].Department = newDepartment;
+                        break;
+                    }
+                }
+            }
         }
         static void Main(string[] args)
         {
@@ -284,6 +398,12 @@ namespace StudentManagementSystem
                         break;
                     case 4:
                         SearchStudent();
+                        break;
+                    case 5:
+                        UpdateStudent();
+                        break;
+                    case 8:
+                        Console.WriteLine("Exiting the program. Goodbye!");
                         break;
 
                     default:
